@@ -1,20 +1,51 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import UserTypeSelectionScreen from "./screens/userTypeScreen.jsx";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import AuthScreen from "./screens/authScreen.jsx";
+import HomeScreen from "./screens/home.jsx";
+import { AuthProvider } from "./context/authContext.js";
+import CartScreen from "./screens/cartScreen.jsx";
+import { Header } from "react-native/Libraries/NewAppScreen";
+import CurrentOrdersScreen from "./screens/orders.jsx";
 
-export default function App() {
+const Stack = createNativeStackNavigator();
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+    <AuthProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+        
+          <Stack.Screen
+            name="UserType"
+            component={UserTypeSelectionScreen}
+            options={{
+              headerTransparent: true,
+              headerShown: true,
+              headerTitle: "Select your role",
+            }}
+          />
+          <Stack.Screen
+            name="Auth"
+            component={AuthScreen}
+            options={{
+              headerTransparent: true,
+              headerTitle: "Authenticate yourself",
+            }}
+          />
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ headerBackVisible: false }}
+          />
+          <Stack.Screen name="Cart" component={CartScreen} />
+          <Stack.Screen name="Orders" component={CurrentOrdersScreen} />
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AuthProvider>
+  );
+};
+
+export default App;
